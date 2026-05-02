@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Reins",
+  "version": "0.1.0",
+  "description": "Drive your real browser from any LLM. MCP bridge with OAuth, multi-browser support, and R2-backed dump capture.",
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "scripting",
+    "webNavigation",
+    "debugger",
+    "cookies",
+    "storage",
+    "identity"
+  ],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Reins"
+  }
+}

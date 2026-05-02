@@ -1,0 +1,5 @@
+node_modules/
+chrome/
+firefox/
+.DS_Store
+*.zip
