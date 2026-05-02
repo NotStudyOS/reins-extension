@@ -9,8 +9,8 @@ import { installPageCommitCapture, setSessionId, setWsSender } from "./page-comm
  *   1. Persist server URL + OAuth tokens + browserId in chrome.storage.
  *   2. Maintain a WebSocket to `<server>/ws` authenticated via two
  *      Sec-WebSocket-Protocol entries:
- *        bearer.<access_token>   — OAuth bearer (worker reads sub from it)
- *        browser.<browserId>     — DO routing key (random uuid per profile)
+ *        bearer.<access_token>   — OAuth bearer
+ *        browser.<browserId>     — routing key (random uuid per profile)
  *   3. On incoming RpcRequest, dispatch to handlers.ts.
  */
 
@@ -161,10 +161,9 @@ async function signIn(serverUrl: string): Promise<Identity> {
     refresh_token?: string;
     expires_in: number;
   };
-  // OAuthProvider tokens are opaque (not JWT), so we can't read claims
-  // locally. Fetch the worker's /platform/me with the new bearer to
-  // populate email/sub from the canonical Cognito claims it carries
-  // server-side.
+  // OAuth tokens are opaque (not JWT), so we can't read claims
+  // locally. Fetch /platform/me with the new bearer to populate
+  // email/sub from the server-side identity claims.
   let email: string | null = null;
   let sub = "";
   try {

@@ -4,7 +4,7 @@ import { read as readConsole, enableFor as enableConsoleFor } from "./console-lo
 
 /**
  * page-commit — captures the *outgoing* page state on navigation and emits
- * a `page.commit` event over the WS so the DO can persist it to D1.
+ * a `page.commit` event over the WS for the server to persist.
  *
  * Lifecycle:
  *   - on `webNavigation.onBeforeNavigate` for the top frame, look up the URL

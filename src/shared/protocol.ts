@@ -1,12 +1,12 @@
 /**
- * Wire protocol shared between Worker DO and the browser extension.
+ * Wire protocol shared between the Reins server and the browser extension.
  *
  * All RPCs are JSON messages over the same WebSocket. Every request has an
- * `id` correlator; the extension echoes `id` in its response so the DO can
- * resolve the right pending promise.
+ * `id` correlator; the extension echoes `id` in its response so the server
+ * can resolve the right pending promise.
  *
- * The request side (DO → extension) uses { id, method, params }.
- * The response side (extension → DO) uses { id, result?, error? }.
+ * The request side (server → extension) uses { id, method, params }.
+ * The response side (extension → server) uses { id, result?, error? }.
  * Extension-initiated push events (tab close, network event) use
  * { event, data } with no id.
  */
