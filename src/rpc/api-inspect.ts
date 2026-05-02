@@ -1,7 +1,7 @@
 import type {
   ApiInspectParams,
   ApiInspectResult,
-} from "../../../src/shared/protocol";
+} from "../shared/protocol";
 import { readNetwork as readNet } from "../net";
 
 /**

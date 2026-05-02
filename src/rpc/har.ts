@@ -1,4 +1,4 @@
-import type { NetworkEntry } from "../../../src/shared/protocol";
+import type { NetworkEntry } from "../shared/protocol";
 
 export function toHar(entries: NetworkEntry[]) {
   return {

@@ -1,7 +1,7 @@
 import type {
   DetectFrameworkParams,
   DetectFrameworkResult,
-} from "../../../src/shared/protocol";
+} from "../shared/protocol";
 
 /**
  * detect_framework — heuristics over `window` globals + script URLs +

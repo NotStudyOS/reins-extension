@@ -1,5 +1,5 @@
 import browser from "webextension-polyfill";
-import type { HistoryParams, NavigateParams, TabsListResult } from "../../../src/shared/protocol";
+import type { HistoryParams, NavigateParams, TabsListResult } from "../shared/protocol";
 import { activeTabId, runInMainWorld } from "./runtime";
 
 export const tabHandlers: Record<string, (params: any) => Promise<unknown>> = {

@@ -20,7 +20,7 @@ import type {
   WsCaptureStopParams,
   WsReadParams,
   WsReadResult,
-} from "../../../src/shared/protocol";
+} from "../shared/protocol";
 import {
   addStream,
   attachAll,

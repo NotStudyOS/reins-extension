@@ -8,7 +8,7 @@ import type {
   ProbeParams,
   ProbeResult,
   ProbeStep,
-} from "../../../src/shared/protocol";
+} from "../shared/protocol";
 import { setRules as installRules, clearRules } from "../intercept";
 import { read as readConsole, enableFor as enableConsoleFor } from "../console-log";
 import { readNetwork as readNet } from "../net";

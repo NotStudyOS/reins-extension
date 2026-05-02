@@ -9,7 +9,7 @@ import type {
   StorageGetParams,
   StorageGetResult,
   StorageSetParams,
-} from "../../../src/shared/protocol";
+} from "../shared/protocol";
 import { cookieUrl } from "./cookies";
 import { runInMainWorld } from "./runtime";
 

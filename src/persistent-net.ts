@@ -11,7 +11,7 @@
  *  - it's uncapped beyond ~10 MB soft limit (local is stricter).
  */
 
-import type { NetworkEntry } from "../../src/shared/protocol";
+import type { NetworkEntry } from "./shared/protocol";
 
 const STORAGE_KEY = "reins/net-buffer";
 type PartialEntry = NetworkEntry & { loaded?: boolean };

@@ -1,4 +1,4 @@
-import type { InterceptRule } from "../../src/shared/protocol";
+import type { InterceptRule } from "./shared/protocol";
 
 /**
  * Request interception via CDP Fetch domain.

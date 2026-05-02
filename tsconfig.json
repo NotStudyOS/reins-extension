@@ -12,5 +12,5 @@
     "jsx": "react-jsx",
     "types": ["chrome", "webextension-polyfill"]
   },
-  "include": ["src/**/*", "../src/shared/**/*"]
+  "include": ["src/**/*"]
 }

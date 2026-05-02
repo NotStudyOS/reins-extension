@@ -2,7 +2,7 @@ import browser from "webextension-polyfill";
 import type {
   MonitorDiffParams,
   MonitorDiffResult,
-} from "../../../src/shared/protocol";
+} from "../shared/protocol";
 
 /**
  * monitor_diff — two-phase snapshot/diff. Snapshots are kept in-memory in the

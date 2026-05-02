@@ -11,7 +11,7 @@ import type {
   WaitForDomStableResult,
   WaitForResponseParams,
   WaitForResponseResult,
-} from "../../../src/shared/protocol";
+} from "../shared/protocol";
 import { readNetwork as readNet } from "../net";
 import { read as readConsole, enableFor as enableConsoleFor } from "../console-log";
 import { sleep } from "./runtime";

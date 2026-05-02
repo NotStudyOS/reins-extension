@@ -1,5 +1,5 @@
 import browser from "webextension-polyfill";
-import type { NetworkEntry, RpcRequest, RpcResponse } from "../../src/shared/protocol";
+import type { NetworkEntry, RpcRequest, RpcResponse } from "./shared/protocol";
 import { handlers, setStreamEmitter } from "./rpc";
 import { installPageCommitCapture, setSessionId, setWsSender } from "./page-commit";
 

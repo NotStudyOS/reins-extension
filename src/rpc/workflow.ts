@@ -2,7 +2,7 @@ import type {
   WorkflowParams,
   WorkflowResult,
   WorkflowStep,
-} from "../../../src/shared/protocol";
+} from "../shared/protocol";
 import { sleep } from "./runtime";
 
 /**

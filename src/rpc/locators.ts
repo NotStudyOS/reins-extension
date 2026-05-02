@@ -9,7 +9,7 @@ import type {
   PageMapResult,
   SelectorSuggestParams,
   SelectorSuggestResult,
-} from "../../../src/shared/protocol";
+} from "../shared/protocol";
 
 /**
  * locators — element-finding ergonomics.

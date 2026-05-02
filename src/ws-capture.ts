@@ -1,4 +1,4 @@
-import type { WsFrame } from "../../src/shared/protocol";
+import type { WsFrame } from "./shared/protocol";
 
 /**
  * WebSocket frame capture via CDP Network.webSocketFrame{Sent,Received}.

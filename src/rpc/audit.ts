@@ -3,7 +3,7 @@ import type {
   AuditFinding,
   AuditParams,
   AuditResult,
-} from "../../../src/shared/protocol";
+} from "../shared/protocol";
 import { readNetwork as readNet } from "../net";
 
 /**

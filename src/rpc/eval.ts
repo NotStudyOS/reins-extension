@@ -2,7 +2,7 @@ import type {
   EvalParams,
   ServiceWorkerEvalParams,
   ServiceWorkerEvalResult,
-} from "../../../src/shared/protocol";
+} from "../shared/protocol";
 import { runInMainWorld, sleep } from "./runtime";
 
 export const evalHandlers: Record<string, (params: any) => Promise<unknown>> = {

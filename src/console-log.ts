@@ -1,4 +1,4 @@
-import type { ConsoleLogEntry, ConsoleLogsParams, ConsoleLogsResult } from "../../src/shared/protocol";
+import type { ConsoleLogEntry, ConsoleLogsParams, ConsoleLogsResult } from "./shared/protocol";
 
 /**
  * Ring buffer for console.* output captured via the CDP `Runtime.consoleAPICalled`

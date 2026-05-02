@@ -33,7 +33,7 @@ import type {
   ViewportMatrixCellResult,
   ViewportMatrixParams,
   ViewportMatrixResult,
-} from "../../../src/shared/protocol";
+} from "../shared/protocol";
 import { readNetwork as readNet } from "../net";
 import { sleep, waitForTabComplete } from "./runtime";
 

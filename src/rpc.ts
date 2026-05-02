@@ -46,7 +46,7 @@ import type {
   SetViewportParams,
   PdfExportParams,
   PdfExportResult,
-} from "../../src/shared/protocol";
+} from "./shared/protocol";
 import { createNetworkHandlers } from "./rpc/network";
 import { domHandlers } from "./rpc/dom";
 import { evalHandlers } from "./rpc/eval";

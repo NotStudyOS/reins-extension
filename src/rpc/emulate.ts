@@ -1,4 +1,4 @@
-import type { EmulateParams, EmulateResult } from "../../../src/shared/protocol";
+import type { EmulateParams, EmulateResult } from "../shared/protocol";
 
 /**
  * emulate — bundle of CDP overrides. Each block is independent; pass only

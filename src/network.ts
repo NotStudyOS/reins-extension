@@ -3,7 +3,7 @@ import type {
   NetworkEntry,
   ReadNetworkFilters,
   AttachDebuggerAllResult,
-} from "../../src/shared/protocol";
+} from "./shared/protocol";
 import { buf, clearTab, markDirty, snapshot } from "./persistent-net";
 
 /**

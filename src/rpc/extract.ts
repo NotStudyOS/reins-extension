@@ -1,7 +1,7 @@
 import type {
   ExtractParams,
   ExtractResult,
-} from "../../../src/shared/protocol";
+} from "../shared/protocol";
 
 /**
  * extract — fat extraction tool. Each `type` runs an in-page extractor and

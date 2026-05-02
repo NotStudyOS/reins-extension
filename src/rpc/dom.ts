@@ -7,7 +7,7 @@ import type {
   DomQueryResult,
   DomXpathParams,
   DomXpathResult,
-} from "../../../src/shared/protocol";
+} from "../shared/protocol";
 
 export const domHandlers: Record<string, (params: any) => Promise<unknown>> = {
   "dom.xpath": async (p: DomXpathParams): Promise<DomXpathResult> => {
