@@ -11,7 +11,8 @@
     "debugger",
     "cookies",
     "storage",
-    "identity"
+    "identity",
+    "alarms"
   ],
   "host_permissions": ["<all_urls>"],
   "background": {

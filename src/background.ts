@@ -31,6 +31,10 @@ interface Identity {
   sub: string;
 }
 
+const REFRESH_SKEW_MS = 5 * 60 * 1000;
+const REFRESH_ALARM = "reins/refresh";
+let refreshInFlight: Promise<Identity | null> | null = null;
+
 let ws: WebSocket | null = null;
 let reconnectDelayMs = RECONNECT_MIN_MS;
 let reconnectTimer: ReturnType<typeof setTimeout> | null = null;
@@ -186,7 +190,66 @@ async function signIn(serverUrl: string): Promise<Identity> {
     sub,
   };
   await saveIdentity(identity);
+  scheduleRefreshAlarm(identity);
   return identity;
+}
+
+async function refreshIdentity(): Promise<Identity | null> {
+  if (refreshInFlight) return refreshInFlight;
+  refreshInFlight = (async () => {
+    const cfg = await loadConfig();
+    const current = await loadIdentity();
+    if (!cfg || !current?.refreshToken) return null;
+    const client = await getOrRegisterClient(cfg.serverUrl);
+    const body = new URLSearchParams({
+      grant_type: "refresh_token",
+      client_id: client.clientId,
+      refresh_token: current.refreshToken,
+    });
+    const res = await fetch(`${cfg.serverUrl}/oauth/token`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: body.toString(),
+    });
+    if (!res.ok) {
+      if (res.status === 400 || res.status === 401) await clearIdentity();
+      throw new Error(`refresh failed: ${res.status}`);
+    }
+    const t = (await res.json()) as {
+      access_token: string;
+      refresh_token?: string;
+      expires_in: number;
+    };
+    const next: Identity = {
+      accessToken: t.access_token,
+      refreshToken: t.refresh_token ?? current.refreshToken,
+      expiresAt: Date.now() + (t.expires_in ?? 3600) * 1000,
+      email: current.email,
+      sub: current.sub,
+    };
+    await saveIdentity(next);
+    scheduleRefreshAlarm(next);
+    return next;
+  })().finally(() => { refreshInFlight = null; });
+  return refreshInFlight;
+}
+
+function scheduleRefreshAlarm(id: Identity) {
+  const when = Math.max(Date.now() + 30_000, id.expiresAt - REFRESH_SKEW_MS);
+  chrome.alarms.create(REFRESH_ALARM, { when });
+}
+
+async function ensureFreshIdentity(): Promise<Identity | null> {
+  const id = await loadIdentity();
+  if (!id) return null;
+  if (id.expiresAt - Date.now() > REFRESH_SKEW_MS) return id;
+  if (!id.refreshToken) return id;
+  try {
+    return await refreshIdentity();
+  } catch (e) {
+    console.warn("[reins] refresh failed", e);
+    return await loadIdentity();
+  }
 }
 
 function decodeJwt(t: string): Record<string, unknown> {
@@ -234,7 +297,7 @@ async function reconnectNow() {
 async function connect() {
   const generation = connectGeneration;
   const cfg = await loadConfig();
-  const id = await loadIdentity();
+  const id = await ensureFreshIdentity();
   if (!cfg || !id) {
     setStatus({ status: "disconnected", detail: id ? "no server configured" : "not signed in" });
     return;
@@ -303,7 +366,11 @@ async function connect() {
     ws = null;
     setSessionId(null);
     setStatus({ status: "disconnected", detail: ev.reason || `code ${ev.code}` });
-    scheduleReconnect(generation);
+    if (ev.code === 1008 || ev.code === 4001 || ev.code === 4003) {
+      void refreshIdentity().catch(() => {}).finally(() => scheduleReconnect(generation));
+    } else {
+      scheduleReconnect(generation);
+    }
   });
 
   socket.addEventListener("error", () => {
@@ -352,7 +419,7 @@ browser.runtime.onMessage.addListener(async (raw: unknown) => {
     const browserId = await getOrCreateBrowserId();
     return {
       serverUrl: cfg?.serverUrl ?? "",
-      signedIn: !!id && id.expiresAt > Date.now(),
+      signedIn: !!id && (id.expiresAt > Date.now() || !!id.refreshToken),
       email: id?.email ?? null,
       browserId,
       status: lastStatus.status,
@@ -367,6 +434,7 @@ browser.runtime.onMessage.addListener(async (raw: unknown) => {
   }
   if (msg?.type === "popup.signOut") {
     await clearIdentity();
+    chrome.alarms.clear(REFRESH_ALARM);
     if (ws) ws.close(1000, "signed out");
     ws = null;
     setStatus({ status: "disconnected", detail: "signed out" });
@@ -403,4 +471,18 @@ setWsSender((msg) => {
 });
 installPageCommitCapture();
 
-void connect();
+chrome.alarms.onAlarm.addListener(async (alarm) => {
+  if (alarm.name !== REFRESH_ALARM) return;
+  try {
+    const next = await refreshIdentity();
+    if (next && ws?.readyState !== WebSocket.OPEN) await reconnectNow();
+  } catch (e) {
+    console.warn("[reins] scheduled refresh failed", e);
+  }
+});
+
+void (async () => {
+  const id = await loadIdentity();
+  if (id?.refreshToken) scheduleRefreshAlarm(id);
+  await connect();
+})();
